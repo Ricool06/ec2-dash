@@ -1,0 +1,7 @@
+{
+  "files.exclude": {
+    "**/node_modules": true,
+    "packages/infra/**/*.d.ts": true,
+    "packages/infra/**/*.js": true
+  }
+}

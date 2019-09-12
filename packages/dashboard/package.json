@@ -1,0 +1,51 @@
+{
+  "name": "dashboard",
+  "version": "0.0.0",
+  "description": "The web frontend for ec2-dash",
+  "author": "Ricool06 <Ricool06@users.noreply.github.com>",
+  "homepage": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ricool06/ec2-dash.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Ricool06/ec2-dash/issues"
+  },
+  "dependencies": {
+    "@aws-amplify/auth": "^1.2.31",
+    "@testing-library/react": "^9.1.1",
+    "@types/jest": "24.0.17",
+    "@types/node": "12.7.1",
+    "@types/react": "16.9.1",
+    "@types/react-dom": "16.8.5",
+    "aws-amplify": "^1.1.36",
+    "aws-amplify-react": "^2.3.12",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-scripts": "3.1.1",
+    "typescript": "3.5.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "test:ci": "CI=true npm run test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+language: node_js
+node_js: 10
+
+install:
+  - npm ci
+  - npx lerna bootstrap
+script:
+  - npx lerna exec npm run build
+  - npx lerna exec --scope dashboard npm run test
+  - npx lerna --scope infra exec npm run deploy
