@@ -1,0 +1,11 @@
+{
+  "name": "root",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.16.4"
+  },
+  "dependencies": {
+    "tslint": "^5.18.0",
+    "tslint-react": "^4.0.0"
+  }
+}

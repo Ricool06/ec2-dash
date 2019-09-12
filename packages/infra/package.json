@@ -1,0 +1,38 @@
+{
+  "name": "infra",
+  "version": "0.0.0",
+  "description": "AWS CDK project to create cloud resources needed for ec2-dash.",
+  "author": "Ricool06 <Ricool06@users.noreply.github.com>",
+  "homepage": "https://github.com/Ricool06/ec2-dash#readme",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ricool06/ec2-dash.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Ricool06/ec2-dash/issues"
+  },
+  "bin": {
+    "infra": "bin/infra.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk",
+    "bootstrap": "cdk bootstrap --profile ec2-dash",
+    "deploy": "npm run bootstrap && cdk deploy --profile ec2-dash *Stack"
+  },
+  "devDependencies": {
+    "@types/node": "^8.10.45",
+    "aws-cdk": "^1.4.0",
+    "ts-node": "^8.1.0",
+    "typescript": "^3.3.3333"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-cognito": "^1.8.0",
+    "@aws-cdk/aws-s3": "^1.8.0",
+    "@aws-cdk/aws-s3-deployment": "^1.8.0",
+    "@aws-cdk/core": "^1.8.0",
+    "source-map-support": "^0.5.9"
+  }
+}
