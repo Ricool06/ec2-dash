@@ -6,5 +6,6 @@ install:
   - npx lerna bootstrap
 script:
   - npx lerna exec npm run build
+  - npx lerna exec npm run lint
   - npx lerna exec --scope dashboard npm run test
-  - npx lerna --scope infra exec npm run deploy
+  - npx lerna --scope infra exec npm run deploy:prod
