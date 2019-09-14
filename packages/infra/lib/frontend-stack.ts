@@ -1,23 +1,48 @@
-import * as cdkS3 from '@aws-cdk/aws-s3';
+import { PolicyStatement } from '@aws-cdk/aws-iam';
+import { Bucket } from '@aws-cdk/aws-s3';
 import { BucketDeployment, Source } from '@aws-cdk/aws-s3-deployment';
-import cdk = require('@aws-cdk/core');
+import { CfnOutput, Construct, Fn, Stack, StackProps } from '@aws-cdk/core';
+import { AwsCustomResource } from '@aws-cdk/custom-resources';
 import * as path from 'path';
 
-export class FrontendStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+export class FrontendStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const frontendBucket = new cdkS3.Bucket(this, 'ec2-dash-frontend', {
+    const frontendBucket = new Bucket(this, 'static-site-bucket', {
       publicReadAccess: true,
       websiteIndexDocument: 'index.html',
     });
 
-    new BucketDeployment(this, 'ec2-dash-fronted', {
+    const deployment = new BucketDeployment(this, 'static-site-bucket-deployment', {
       destinationBucket: frontendBucket,
       source: Source.asset(path.join(__dirname, '../../dashboard/build')),
     });
 
-    new cdk.CfnOutput(this, 'frontendBucket', {
+    const cognitoUserPoolId = Fn.importValue('cognitoUserPoolId');
+    const cognitoUserPoolClientId = Fn.importValue('cognitoUserPoolClientId');
+    const cognitoRegion = Fn.importValue('cognitoRegion');
+    new AwsCustomResource(this, 'FrontendConfig', {
+      onUpdate: {
+        action: 'putObject',
+        parameters: {
+          Body: `window._ec2DashConfig=${JSON.stringify({cognitoUserPoolClientId, cognitoUserPoolId, cognitoRegion})};`,
+          Bucket: frontendBucket.bucketName,
+          Key: 'config.js',
+        },
+        physicalResourceId: Date.now().toString(),
+        service: 'S3',
+      },
+
+      policyStatements: [
+        new PolicyStatement({
+           actions: ['s3:PutObject'],
+           resources: [`${frontendBucket.bucketArn}/config.js`],
+        }),
+      ],
+    }).node.addDependency(deployment);
+
+    new CfnOutput(this, 'frontendBucket', {
       description: 'Name of the bucket where static site will be served from',
       value: frontendBucket.bucketName,
     });

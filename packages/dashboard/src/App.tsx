@@ -11,10 +11,12 @@ const App: React.FC = () => {
   );
 }
 
+const ec2DashConfig = (window as any)._ec2DashConfig;
+
 Auth.configure({
-  userPoolId: 'eu-west-1_BFo2qet9Y',
-  region: 'eu-west-1',
-  userPoolWebClientId: '5j90aqphn901qs9789c2lnd7mu',
+  userPoolId: ec2DashConfig['cognitoUserPoolId'],
+  region: ec2DashConfig['cognitoRegion'],
+  userPoolWebClientId: ec2DashConfig['cognitoUserPoolClientId'],
 });
 
 export default withAuthenticator(App);
