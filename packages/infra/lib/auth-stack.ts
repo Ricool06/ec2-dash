@@ -1,12 +1,9 @@
 import { CfnUserPool, CfnUserPoolClient, UserPoolAttribute } from '@aws-cdk/aws-cognito';
-import cdk = require('@aws-cdk/core');
+import { CfnOutput, Construct, Stack, StackProps } from '@aws-cdk/core';
 
-export class AuthStack extends cdk.Stack {
+export class AuthStack extends Stack {
 
-  public readonly cognitoUserPoolId: string;
-  public readonly cognitoUserPoolClientId: string;
-
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
     // The code that defines your stack goes here
@@ -34,25 +31,22 @@ export class AuthStack extends cdk.Stack {
       userPoolId: cognitoUserPool.ref,
     });
 
-    new cdk.CfnOutput(this, 'cognitoUserPoolId', {
+    new CfnOutput(this, 'cognitoUserPoolId', {
       description: 'Physical ID of the cognito user pool which will be used to store users',
       exportName: 'cognitoUserPoolId',
       value: cognitoUserPool.ref,
     });
 
-    new cdk.CfnOutput(this, 'cognitoUserPoolClientId', {
+    new CfnOutput(this, 'cognitoUserPoolClientId', {
       description: 'Physical ID of the cognito user pool client which will be used to interact with the user pool',
       exportName: 'cognitoUserPoolClientId',
       value: userPoolClient.ref,
     });
 
-    new cdk.CfnOutput(this, 'cognitoRegion', {
+    new CfnOutput(this, 'cognitoRegion', {
       description: 'Region that the cognito resources are deployed to',
       exportName: 'cognitoRegion',
       value: this.region,
     });
-
-    this.cognitoUserPoolId = cognitoUserPool.ref;
-    this.cognitoUserPoolClientId = userPoolClient.ref;
   }
 }

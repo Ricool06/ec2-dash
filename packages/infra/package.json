@@ -16,6 +16,7 @@
     "infra": "bin/infra.js"
   },
   "scripts": {
+    "lint": "tslint --project .",
     "build": "tsc",
     "watch": "tsc -w",
     "cdk": "cdk",
@@ -29,6 +30,7 @@
     "@types/node": "^8.10.45",
     "aws-cdk": "^1.4.0",
     "ts-node": "^8.1.0",
+    "tslint": "^5.18.0",
     "typescript": "^3.3.3333"
   },
   "dependencies": {
