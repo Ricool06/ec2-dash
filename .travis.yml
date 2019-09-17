@@ -1,5 +1,9 @@
 language: node_js
 node_js: 10
+addons:
+  apt:
+    packages:
+    - libgconf-2-4
 
 install:
   - npm ci
