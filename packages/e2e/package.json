@@ -18,9 +18,9 @@
     "url": "git+https://github.com/Ricool06/ec2-dash.git"
   },
   "scripts": {
-    "test": "AWS_SDK_LOAD_CONFIG=true AWS_PROFILE=ec2-dash CYPRESS_USER=$USER npx cypress run",
-    "test:prod": "npx cypress run --env DEPLOYMENT_STAGE=prod",
-    "open:cypress": "AWS_SDK_LOAD_CONFIG=true AWS_PROFILE=ec2-dash CYPRESS_USER=$USER npx cypress open",
+    "test": "AWS_SDK_LOAD_CONFIG=true AWS_PROFILE=ec2-dash CYPRESS_USER=$USER cypress run",
+    "open:cypress": "AWS_SDK_LOAD_CONFIG=true AWS_PROFILE=ec2-dash CYPRESS_USER=$USER cypress open",
+    "test:prod": "AWS_SDK_LOAD_CONFIG=true AWS_PROFILE=ec2-dash CYPRESS_DEPLOYMENT_STAGE=prod cypress run",
     "lint": "eslint ."
   },
   "bugs": {
