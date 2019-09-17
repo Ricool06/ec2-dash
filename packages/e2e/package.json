@@ -20,7 +20,8 @@
   "scripts": {
     "test": "AWS_SDK_LOAD_CONFIG=true AWS_PROFILE=ec2-dash CYPRESS_USER=$USER npx cypress run",
     "test:prod": "npx cypress run --env DEPLOYMENT_STAGE=prod",
-    "open:cypress": "AWS_SDK_LOAD_CONFIG=true AWS_PROFILE=ec2-dash CYPRESS_USER=$USER npx cypress open"
+    "open:cypress": "AWS_SDK_LOAD_CONFIG=true AWS_PROFILE=ec2-dash CYPRESS_USER=$USER npx cypress open",
+    "lint": "eslint ."
   },
   "bugs": {
     "url": "https://github.com/Ricool06/ec2-dash/issues"
