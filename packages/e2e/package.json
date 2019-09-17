@@ -20,7 +20,7 @@
   "scripts": {
     "test": "AWS_SDK_LOAD_CONFIG=true AWS_PROFILE=ec2-dash CYPRESS_USER=$USER cypress run",
     "open:cypress": "AWS_SDK_LOAD_CONFIG=true AWS_PROFILE=ec2-dash CYPRESS_USER=$USER cypress open",
-    "test:prod": "AWS_SDK_LOAD_CONFIG=true AWS_PROFILE=ec2-dash CYPRESS_DEPLOYMENT_STAGE=prod cypress run",
+    "test:prod": "AWS_SDK_LOAD_CONFIG=false CYPRESS_DEPLOYMENT_STAGE=prod cypress run",
     "lint": "eslint ."
   },
   "bugs": {
