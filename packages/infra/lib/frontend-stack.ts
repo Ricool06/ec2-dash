@@ -3,10 +3,11 @@ import { Bucket } from '@aws-cdk/aws-s3';
 import { BucketDeployment, Source } from '@aws-cdk/aws-s3-deployment';
 import { CfnOutput, Construct, Fn, Stack, StackProps } from '@aws-cdk/core';
 import { AwsCustomResource } from '@aws-cdk/custom-resources';
+import { createHash } from 'crypto';
 import * as path from 'path';
 
 export class FrontendStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props: StackProps, deploymentStage: string) {
     super(scope, id, props);
 
     const frontendBucket = new Bucket(this, 'static-site-bucket', {
@@ -19,9 +20,10 @@ export class FrontendStack extends Stack {
       source: Source.asset(path.join(__dirname, '../../dashboard/build')),
     });
 
-    const cognitoUserPoolId = Fn.importValue('cognitoUserPoolId');
-    const cognitoUserPoolClientId = Fn.importValue('cognitoUserPoolClientId');
-    const cognitoRegion = Fn.importValue('cognitoRegion');
+    const cognitoUserPoolId = Fn.importValue(`${deploymentStage}CognitoUserPoolId`);
+    const cognitoUserPoolClientId = Fn.importValue(`${deploymentStage}CognitoUserPoolClientId`);
+    const cognitoRegion = Fn.importValue(`${deploymentStage}CognitoRegion`);
+
     new AwsCustomResource(this, 'FrontendConfig', {
       onUpdate: {
         action: 'putObject',
@@ -42,9 +44,10 @@ export class FrontendStack extends Stack {
       ],
     }).node.addDependency(deployment);
 
-    new CfnOutput(this, 'frontendBucket', {
-      description: 'Name of the bucket where static site will be served from',
-      value: frontendBucket.bucketName,
+    new CfnOutput(this, 'frontendBucketUrl', {
+      description: 'URL of the bucket where static site will be served from',
+      exportName: `${deploymentStage}FrontendBucketUrl`,
+      value: frontendBucket.bucketWebsiteUrl,
     });
   }
 }
