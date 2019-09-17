@@ -79,7 +79,7 @@ module.exports = (on, config) => {
   });
 
   return getCloudFormationExports({
-    deploymentStage: config.env.deploymentStage || `localdev${config.env.USER}`,
+    deploymentStage: config.env.DEPLOYMENT_STAGE || `localdev${config.env.USER}`,
     exportFilters: [
       'FrontendBucketUrl',
       'CognitoRegion',
