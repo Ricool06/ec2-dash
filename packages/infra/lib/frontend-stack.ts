@@ -20,13 +20,10 @@ export class FrontendStack extends Stack {
       source: Source.asset(path.join(__dirname, '../../dashboard/build')),
     });
 
-    const cognitoUserPoolId = Fn.importValue('cognitoUserPoolId');
-    const cognitoUserPoolClientId = Fn.importValue('cognitoUserPoolClientId');
-    const cognitoRegion = Fn.importValue('cognitoRegion');
-    const configBody =
-      `window._ec2DashConfig=${JSON.stringify({cognitoUserPoolClientId, cognitoUserPoolId, cognitoRegion})};`;
+    const cognitoUserPoolId = Fn.importValue(`${deploymentStage}CognitoUserPoolId`);
+    const cognitoUserPoolClientId = Fn.importValue(`${deploymentStage}CognitoUserPoolClientId`);
+    const cognitoRegion = Fn.importValue(`${deploymentStage}CognitoRegion`);
 
-    const configPhysicalResourceId = createHash('sha256').update(configBody).digest('hex');
     new AwsCustomResource(this, 'FrontendConfig', {
       onUpdate: {
         action: 'putObject',
@@ -35,7 +32,7 @@ export class FrontendStack extends Stack {
           Bucket: frontendBucket.bucketName,
           Key: 'config.js',
         },
-        physicalResourceId: configPhysicalResourceId,
+        physicalResourceId: Date.now().toString(),
         service: 'S3',
       },
 
