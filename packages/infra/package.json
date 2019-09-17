@@ -22,6 +22,7 @@
     "cdk": "cdk",
     "bootstrap": "cdk bootstrap --profile ec2-dash",
     "deploy": "npm run bootstrap && cdk deploy --profile ec2-dash *Stack*",
+    "synth": "npm run bootstrap && cdk synthesize --profile ec2-dash *Stack*",
     "destroy": "cdk destroy --profile ec2-dash *Stack*",
     "deploy:prod": "npm run bootstrap && cdk deploy --require-approval never --profile ec2-dash --context deploymentStage=prod *Stack*",
     "destroy:prod": "cdk destroy --profile ec2-dash --context deploymentStage=prod *Stack*"

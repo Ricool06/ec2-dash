@@ -2,8 +2,7 @@ import { CfnUserPool, CfnUserPoolClient, UserPoolAttribute } from '@aws-cdk/aws-
 import { CfnOutput, Construct, Stack, StackProps } from '@aws-cdk/core';
 
 export class AuthStack extends Stack {
-
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props: StackProps, deploymentStage: string) {
     super(scope, id, props);
 
     // The code that defines your stack goes here
@@ -33,19 +32,19 @@ export class AuthStack extends Stack {
 
     new CfnOutput(this, 'cognitoUserPoolId', {
       description: 'Physical ID of the cognito user pool which will be used to store users',
-      exportName: 'cognitoUserPoolId',
+      exportName: `${deploymentStage}CognitoUserPoolId`,
       value: cognitoUserPool.ref,
     });
 
     new CfnOutput(this, 'cognitoUserPoolClientId', {
       description: 'Physical ID of the cognito user pool client which will be used to interact with the user pool',
-      exportName: 'cognitoUserPoolClientId',
+      exportName: `${deploymentStage}CognitoUserPoolClientId`,
       value: userPoolClient.ref,
     });
 
     new CfnOutput(this, 'cognitoRegion', {
       description: 'Region that the cognito resources are deployed to',
-      exportName: 'cognitoRegion',
+      exportName: `${deploymentStage}CognitoRegion`,
       value: this.region,
     });
   }
