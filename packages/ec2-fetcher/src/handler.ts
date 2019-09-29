@@ -8,7 +8,7 @@ const ec2Service = new EC2();
 const boundFetchEc2Instances: () => Promise<IEc2Instance[]> = fetchEc2Instances
   .bind(fetchEc2Instances, ec2Service);
 
-export const handler: APIGatewayProxyHandler = async (event, context) => {
+export const handler: APIGatewayProxyHandler = async () => {
   const result: APIGatewayProxyResult = {
     body: '',
     statusCode: 500,

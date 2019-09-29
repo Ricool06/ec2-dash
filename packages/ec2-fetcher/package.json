@@ -5,7 +5,8 @@
   "main": "handler.js",
   "scripts": {
     "build": "sls webpack",
-    "test": "jest"
+    "test": "jest",
+    "lint": "tslint --project ."
   },
   "dependencies": {
     "aws-sdk": "^2.534.0",
