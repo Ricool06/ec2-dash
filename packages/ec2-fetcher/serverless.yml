@@ -12,10 +12,10 @@ provider:
   name: aws
   runtime: nodejs10.x
 
+package:
+  exclude:
+    - "**/*.spec.ts"
+
 functions:
   hello:
-    handler: handler.hello
-    events:
-      - http:
-          method: get
-          path: hello
+    handler: src/handler.fetchEc2Instances

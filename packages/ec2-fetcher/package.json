@@ -13,8 +13,11 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.17",
+    "@types/chance": "^1.0.6",
     "@types/jest": "^24.0.18",
     "@types/node": "^10.12.18",
+    "aws-sdk-mock": "^4.5.0",
+    "chance": "^1.1.0",
     "jest": "^24.9.0",
     "serverless": "^1.52.2",
     "serverless-webpack": "^5.2.0",
@@ -25,5 +28,19 @@
     "webpack": "^4.29.0"
   },
   "author": "Ricool06",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ricool06/ec2-dash.git"
+  },
+  "keywords": [
+    "aws",
+    "ec2",
+    "fetch",
+    "ec2-dash"
+  ],
+  "bugs": {
+    "url": "https://github.com/Ricool06/ec2-dash/issues"
+  },
+  "homepage": "https://github.com/Ricool06/ec2-dash#readme"
 }
