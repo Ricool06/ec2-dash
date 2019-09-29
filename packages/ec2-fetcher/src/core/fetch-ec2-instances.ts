@@ -10,32 +10,6 @@ const mapResultToInstanceArray = (data: EC2.DescribeInstancesResult): IEc2Instan
   )).reduce((builder, current) => builder.concat(current));
 };
 
-// const getMore = (NextToken, ec2Service): Promise<IEc2Instance[]> => {
-//   return new Promise((resolve, reject) => {
-//     if (!NextToken) { resolve([]); }
-
-//     ec2Service.describeInstances({NextToken}, getDescribeInstancesResponseHandler(resolve, reject, ec2Service));
-//   });
-// };
-
-// const getDescribeInstancesResponseHandler = (resolve, reject, ec2Service: EC2) => {
-//   return (err: AWSError, data: EC2.DescribeInstancesResult) => {
-//     if (err) {
-//       reject(err);
-//     } else {
-//       getMore(data.NextToken, ec2Service)
-//         .then(instances => mapResultToInstanceArray(data).concat(instances))
-//         .then(resolve);
-//     }
-//   };
-// };
-
-// export const fetchEc2Instances = (ec2Service: EC2): Promise<IEc2Instance[]> => {
-//   return new Promise((resolve, reject) => {
-//     ec2Service.describeInstances(getDescribeInstancesResponseHandler(resolve, reject, ec2Service));
-//   });
-// };
-
 export const fetchEc2Instances = (
   ec2Service: EC2,
   NextToken: string = undefined,
@@ -50,7 +24,8 @@ export const fetchEc2Instances = (
           reject(err);
         } else {
           fetchEc2Instances(ec2Service, NextToken = data.NextToken, firstCall = false)
-            .then(newInstances => resolve(mapResultToInstanceArray(data).concat(newInstances)));
+            .then(newInstances => resolve(mapResultToInstanceArray(data).concat(newInstances)))
+            .catch(reject);
         }
       });
     }

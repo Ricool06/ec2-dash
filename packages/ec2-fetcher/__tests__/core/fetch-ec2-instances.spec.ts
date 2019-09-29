@@ -6,9 +6,7 @@ import { IEc2Instance } from '../../src/models';
 
 describe('fetch-ec2-instances', () => {
   it('should return a list of all ec2 instances', async () => {
-    awsMock.restore('EC2');
-    awsMock.setSDKInstance(aws);
-    awsMock.mock('EC2', 'describeInstances', (_params, callback) => callback(null, fakeDescribeInstancesResult));
+    awsMock.mock('EC2', 'describeInstances', (_, callback) => callback(null, fakeDescribeInstancesResult));
     const ec2 = new aws.EC2();
 
     const expectedResult: IEc2Instance[] = fakeDescribeInstancesResult.Reservations
@@ -26,9 +24,6 @@ describe('fetch-ec2-instances', () => {
   });
 
   it('should handle pagination of ec2 instances', async () => {
-    awsMock.restore('EC2');
-    awsMock.setSDKInstance(aws);
-
     const getNextResult = jest.fn()
       .mockReturnValueOnce(fakeDescribeInstancesResultWithNextToken)
       .mockReturnValueOnce(fakeDescribeInstancesResult);
@@ -52,13 +47,31 @@ describe('fetch-ec2-instances', () => {
   });
 
   it('should reject on error', async () => {
-    awsMock.restore('EC2');
-    awsMock.setSDKInstance(aws);
-
     const expectedError = new Error('AWS is dead :(');
     awsMock.mock('EC2', 'describeInstances', (_, callback) => callback(expectedError, null));
     const ec2 = new aws.EC2();
 
     await expect(fetchEc2Instances(ec2)).rejects.toBe(expectedError);
+  });
+
+  it('should reject on error after first page', async () => {
+    const expectedError = new Error('AWS is dead :(');
+
+    const getNextCallbackArgs = jest.fn()
+      .mockReturnValueOnce([null, fakeDescribeInstancesResultWithNextToken])
+      .mockReturnValueOnce([expectedError, null]);
+
+    awsMock.mock('EC2', 'describeInstances', (_, callback) => callback(...getNextCallbackArgs()));
+    const ec2 = new aws.EC2();
+
+    await expect(fetchEc2Instances(ec2)).rejects.toBe(expectedError);
+  });
+
+  beforeEach(() => {
+    awsMock.setSDKInstance(aws);
+  });
+
+  afterEach(() => {
+    awsMock.restore('EC2');
   });
 });
