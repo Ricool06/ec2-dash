@@ -2,6 +2,7 @@
 import cdk = require('@aws-cdk/core');
 import { Aws, Construct, Tag } from '@aws-cdk/core';
 import 'source-map-support/register';
+import { ApiStack } from '../lib/api-stack';
 import { AuthStack } from '../lib/auth-stack';
 import { FrontendStack } from '../lib/frontend-stack';
 
@@ -18,8 +19,10 @@ class Ec2Dash extends Construct {
     super(scope, id);
 
     const authStack = new AuthStack(this, 'AuthStack', {env}, deploymentStage);
+    const apiStack  = new ApiStack(this, 'ApiStack', {env}, deploymentStage);
     const frontendStack = new FrontendStack(this, 'FrontendStack', {env}, deploymentStage);
 
+    apiStack.addDependency(authStack);
     frontendStack.addDependency(authStack);
   }
 }

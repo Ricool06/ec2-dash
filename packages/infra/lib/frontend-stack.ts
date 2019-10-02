@@ -3,7 +3,6 @@ import { Bucket } from '@aws-cdk/aws-s3';
 import { BucketDeployment, Source } from '@aws-cdk/aws-s3-deployment';
 import { CfnOutput, Construct, Fn, Stack, StackProps } from '@aws-cdk/core';
 import { AwsCustomResource } from '@aws-cdk/custom-resources';
-import { createHash } from 'crypto';
 import * as path from 'path';
 
 export class FrontendStack extends Stack {
@@ -17,7 +16,7 @@ export class FrontendStack extends Stack {
 
     const deployment = new BucketDeployment(this, 'static-site-bucket-deployment', {
       destinationBucket: frontendBucket,
-      source: Source.asset(path.join(__dirname, '../../dashboard/build')),
+      sources: [Source.asset(path.join(__dirname, '../../dashboard/build'))],
     });
 
     const cognitoUserPoolId = Fn.importValue(`${deploymentStage}CognitoUserPoolId`);
