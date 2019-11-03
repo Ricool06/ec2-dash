@@ -12,6 +12,7 @@
 // the project's config changing)
 
 const { CloudFormation, CognitoIdentityServiceProvider } = require('aws-sdk');
+const { default: Auth } = require('@aws-amplify/auth');
 const crypto = require('crypto');
 
 /** @type { import(".").filterExports } */
@@ -29,7 +30,7 @@ const mapExports = (exports) => ({
   }, obj)
 });
 
-const getCloudFormationExports = ({deploymentStage, exportFilters}) => new CloudFormation()
+const getCloudFormationExports = ({ deploymentStage, exportFilters }) => new CloudFormation()
   .listExports()
   .promise()
   .then(response => response.Exports)
@@ -38,7 +39,7 @@ const getCloudFormationExports = ({deploymentStage, exportFilters}) => new Cloud
   .then(stagedExports => filterExports(stagedExports).by(exportFilters))
   .then(filteredExports => mapExports(filteredExports).intoObject({}, deploymentStage));
 
-const createCognitoUser = ({Username, TemporaryPassword, UserPoolId}) => new CognitoIdentityServiceProvider()
+const createCognitoUser = ({ Username, TemporaryPassword, UserPoolId }) => new CognitoIdentityServiceProvider()
   .adminCreateUser({
     UserPoolId,
     MessageAction: 'SUPPRESS',
@@ -49,23 +50,43 @@ const createCognitoUser = ({Username, TemporaryPassword, UserPoolId}) => new Cog
   })
   .promise();
 
-const generateSecureString = ({length, suffix}) => crypto
+const generateSecureString = ({ length, suffix }) => crypto
   .randomBytes(length || 24)
   .toString('hex') + (suffix || '');
 
-const generateCognitoUser = async ({UserPoolId}) => {
-  const Username = generateSecureString({length: 24, suffix: '@nowhere.eu'});
-  const TemporaryPassword = generateSecureString({length: 24});
-  await createCognitoUser({Username, TemporaryPassword, UserPoolId});
-  return {username: Username, password: TemporaryPassword};
+const generateCognitoUser = async ({ UserPoolId }) => {
+  const Username = generateSecureString({ length: 24, suffix: '@nowhere.eu' });
+  const TemporaryPassword = generateSecureString({ length: 24 });
+  await createCognitoUser({ Username, TemporaryPassword, UserPoolId });
+  return { username: Username, password: TemporaryPassword };
 };
 
-const deleteCognitoUser = ({UserPoolId, Username}) => new CognitoIdentityServiceProvider()
+const deleteCognitoUser = ({ UserPoolId, Username }) => new CognitoIdentityServiceProvider()
   .adminDeleteUser({
     UserPoolId,
     Username,
   })
   .promise();
+
+const loginCognitoUser = async ({ username, password, userPoolId, userPoolWebClientId, region }) => {
+  global.fetch = require('node-fetch');
+  Auth.configure({
+    Auth: {
+      userPoolId,
+      userPoolWebClientId,
+      region,
+    }
+  });
+
+  await new CognitoIdentityServiceProvider().adminSetUserPassword({
+    Username: username,
+    Password: password,
+    Permanent: true,
+    UserPoolId: userPoolId,
+  }).promise();
+
+  return await Auth.signIn({ username, password });
+};
 
 
 module.exports = (on, config) => {
@@ -76,6 +97,7 @@ module.exports = (on, config) => {
     generateSecureString,
     generateCognitoUser,
     deleteCognitoUser,
+    loginCognitoUser,
   });
 
   return getCloudFormationExports({
