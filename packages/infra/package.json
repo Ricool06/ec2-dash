@@ -29,20 +29,21 @@
   },
   "devDependencies": {
     "@types/node": "^8.10.45",
-    "aws-cdk": "^1.10.1",
+    "aws-cdk": "^1.15.0",
     "ts-node": "^8.1.0",
     "tslint": "^5.18.0",
     "typescript": "^3.3.3333"
   },
   "dependencies": {
-    "@aws-cdk/aws-apigateway": "^1.10.1",
-    "@aws-cdk/aws-cognito": "^1.10.1",
-    "@aws-cdk/aws-lambda": "^1.10.1",
-    "@aws-cdk/aws-s3": "^1.10.1",
-    "@aws-cdk/aws-s3-assets": "^1.10.1",
-    "@aws-cdk/aws-s3-deployment": "^1.10.1",
-    "@aws-cdk/core": "^1.10.1",
-    "@aws-cdk/custom-resources": "^1.10.1",
+    "@aws-cdk/aws-apigateway": "^1.15.0",
+    "@aws-cdk/aws-cognito": "^1.15.0",
+    "@aws-cdk/aws-iam": "^1.15.0",
+    "@aws-cdk/aws-lambda": "^1.15.0",
+    "@aws-cdk/aws-s3": "^1.15.0",
+    "@aws-cdk/aws-s3-assets": "^1.15.0",
+    "@aws-cdk/aws-s3-deployment": "^1.15.0",
+    "@aws-cdk/core": "^1.15.0",
+    "@aws-cdk/custom-resources": "^1.15.0",
     "source-map-support": "^0.5.9"
   }
 }
