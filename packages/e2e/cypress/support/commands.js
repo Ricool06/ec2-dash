@@ -23,6 +23,37 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
-Cypress.Commands.add('loginWithCognito', (email, password) => {
-  cy.task('')
-});
+Cypress.Commands.add('loginWithCognito', () => cy
+  .clearLocalStorage()
+  .task('generateCognitoUser', { UserPoolId: Cypress.env('CognitoUserPoolId') })
+  .as('loginCredentials')
+  .get('@loginCredentials')
+  .then(({ username, password }) => cy
+    .task('loginCognitoUser', {
+      username,
+      password,
+      userPoolWebClientId: Cypress.env('CognitoUserPoolClientId'),
+      userPoolId: Cypress.env('CognitoUserPoolId'),
+      region: Cypress.env('CognitoRegion'),
+    })
+    .as('cognitoResponse')
+    .get('@cognitoResponse')
+    .then(cognitoResponse => {
+      const keyPrefixWithUsername = `${cognitoResponse.keyPrefix}.${cognitoResponse.username}`;
+      window.localStorage.setItem(`${keyPrefixWithUsername}.idToken`, cognitoResponse.signInUserSession.idToken.jwtToken);
+      window.localStorage.setItem(`${keyPrefixWithUsername}.accessToken`, cognitoResponse.signInUserSession.accessToken.jwtToken);
+      window.localStorage.setItem(`${keyPrefixWithUsername}.refreshToken`, cognitoResponse.signInUserSession.refreshToken.token);
+      window.localStorage.setItem(`${keyPrefixWithUsername}.clockDrift`, cognitoResponse.signInUserSession.clockDrift);
+      window.localStorage.setItem(`${cognitoResponse.keyPrefix}.LastAuthUser`, cognitoResponse.username);
+      window.localStorage.setItem('amplify-authenticator-authState', 'signedIn');
+    })));
+
+Cypress.Commands.add('deleteLoginUser', () => cy
+  .get('@loginCredentials')
+  .then(loginCredentials => cy
+    .task(
+      'deleteCognitoUser',
+      {
+        UserPoolId: Cypress.env('CognitoUserPoolId'),
+        Username: loginCredentials.username
+      })));
