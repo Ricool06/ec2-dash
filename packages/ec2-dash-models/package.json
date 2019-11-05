@@ -1,0 +1,30 @@
+{
+  "name": "ec2-dash-models",
+  "version": "0.0.0",
+  "description": "Models for ec2-dash",
+  "author": "Ricool06 <Ricool06@users.noreply.github.com>",
+  "homepage": "https://github.com/Ricool06/ec2-dash#readme",
+  "license": "ISC",
+  "main": "lib/index.ts",
+  "private": true,
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ricool06/ec2-dash.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/Ricool06/ec2-dash/issues"
+  },
+  "devDependencies": {
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.2"
+  }
+}

@@ -18,5 +18,4 @@ Auth.configure({
   userPoolId: ec2DashConfig.cognitoUserPoolId,
   userPoolWebClientId: ec2DashConfig.cognitoUserPoolClientId,
 });
-
 export default withAuthenticator(App);

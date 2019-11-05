@@ -1,5 +1,5 @@
 import { EC2 } from 'aws-sdk';
-import { IEc2Instance } from '../models';
+import { IEc2Instance } from 'ec2-dash-models';
 
 const mapResultToInstanceArray = (data: EC2.DescribeInstancesResult): IEc2Instance[] => {
   return data.Reservations.map(reservation =>

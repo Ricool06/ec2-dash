@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.534.0",
+    "ec2-dash-models": "^0.0.0",
     "source-map-support": "^0.5.10"
   },
   "devDependencies": {
