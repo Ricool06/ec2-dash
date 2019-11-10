@@ -1,12 +1,10 @@
-import Auth, { AuthClass } from '@aws-amplify/auth';
+import Auth from '@aws-amplify/auth';
+import { CognitoUserSession } from 'amazon-cognito-identity-js';
 import axios, { AxiosRequestConfig } from 'axios';
 import { IEc2Instance } from 'ec2-dash-models';
-import { getInstances } from './getInstances';
-import { CognitoUserSession, CognitoIdToken } from 'amazon-cognito-identity-js';
-import { async } from 'q';
+import { getInstances } from '.';
 
 jest.mock('axios');
-jest.mock('@aws-amplify/auth');
 
 describe('getInstances', () => {
   const baseURL = 'https://base.url';
