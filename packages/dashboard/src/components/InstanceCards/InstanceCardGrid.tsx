@@ -1,8 +1,8 @@
 import { IEc2Instance } from 'ec2-dash-models';
 import React, { useEffect, useState } from 'react';
+import { CardColumns } from 'react-bootstrap';
 import { getInstances } from '../../effects';
 import InstanceCard from './InstanceCard';
-import { CardColumns } from 'react-bootstrap';
 
 interface IInstanceCardGridProps {
   apiBaseUrl: string;
