@@ -11,14 +11,14 @@ interface IInstanceCardGridProps {
 const InstanceCardGrid: React.FC<IInstanceCardGridProps> = (props) => {
   const [instances, setInstances] = useState([] as IEc2Instance[]);
 
-  const refreshInstances = async () => {
-    const newInstances = await getInstances(props.apiBaseUrl);
-    setInstances(newInstances);
-  };
-
   useEffect(() => {
+    const refreshInstances = async () => {
+      const newInstances = await getInstances(props.apiBaseUrl);
+      setInstances(newInstances);
+    };
+
     refreshInstances();
-  }, []);
+  }, [props.apiBaseUrl]);
 
   const instanceCards = instances
     .map((instance) => (<InstanceCard key={instance.id} instance={instance} />));
