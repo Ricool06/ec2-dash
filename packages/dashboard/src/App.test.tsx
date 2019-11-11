@@ -34,7 +34,7 @@ describe('App', () => {
 
   it('should contain a grid of instance cards', () => {
     const expectedApiBaseUrl = (window as any)._ec2DashConfig.apiBaseUrl;
-    
+
     const wrapper = shallow(<App />);
 
     expect(wrapper.contains(<InstanceCardGrid apiBaseUrl={expectedApiBaseUrl} />)).toBeTruthy();

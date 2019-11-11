@@ -1,7 +1,8 @@
-import { AuthorizationType, CfnAuthorizer, LambdaIntegration, RestApi } from '@aws-cdk/aws-apigateway';
+import {
+  AuthorizationType, CfnAuthorizer, Cors, LambdaIntegration, MethodResponse, RestApi } from '@aws-cdk/aws-apigateway';
 import { PolicyStatement } from '@aws-cdk/aws-iam';
 import { Code, Function as LambdaFunction, Runtime } from '@aws-cdk/aws-lambda';
-import { Construct, Fn, Stack, StackProps } from '@aws-cdk/core';
+import { CfnOutput, Construct, Fn, Stack, StackProps } from '@aws-cdk/core';
 import * as path from 'path';
 
 export class ApiStack extends Stack {
@@ -31,10 +32,38 @@ export class ApiStack extends Stack {
       type: AuthorizationType.COGNITO,
     });
 
+    const lambdaIntegration = new LambdaIntegration(getInstancesLambda, {
+      integrationResponses: [{
+        responseParameters: {
+          'method.response.header.Access-Control-Allow-Origin': '\'*\'',
+        },
+        statusCode: '200',
+      }],
+    });
+
+    const methodResponses: MethodResponse[] = [{
+      responseParameters: {
+        'method.response.header.Access-Control-Allow-Origin': true,
+      },
+      statusCode: '200',
+    }];
+
     const instancesResource = restApi.root.addResource('instances');
-    instancesResource.addMethod('GET', new LambdaIntegration(getInstancesLambda), {
+    instancesResource.addMethod('GET', lambdaIntegration, {
       authorizationType: AuthorizationType.COGNITO,
       authorizer: { authorizerId: apiAuthorizer.ref },
+      methodResponses,
+    });
+
+    instancesResource.addCorsPreflight({
+      allowMethods: Cors.ALL_METHODS,
+      allowOrigins: Cors.ALL_ORIGINS,
+    });
+
+    new CfnOutput(this, 'apiBaseUrl', {
+      description: 'Base url for the ec2-dash api',
+      exportName: `${deploymentStage}apiBaseUrl`,
+      value: restApi.url,
     });
   }
 }

@@ -6,10 +6,10 @@ export const getInstances = async (baseURL: string): Promise<IEc2Instance[]> => 
   const session = await Auth.currentSession();
   const jwt = session.getIdToken().getJwtToken();
 
-  return axios.get('/instances', {
+  return axios.get<IEc2Instance[]>('/instances', {
     baseURL,
     headers: {
       Authorization: jwt,
     },
-  });
+  }).then((response) => response.data);
 };

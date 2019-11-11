@@ -19,6 +19,7 @@ export class FrontendStack extends Stack {
       sources: [Source.asset(path.join(__dirname, '../../dashboard/build'))],
     });
 
+    const apiBaseUrl = Fn.importValue(`${deploymentStage}apiBaseUrl`);
     const cognitoUserPoolId = Fn.importValue(`${deploymentStage}CognitoUserPoolId`);
     const cognitoUserPoolClientId = Fn.importValue(`${deploymentStage}CognitoUserPoolClientId`);
     const cognitoRegion = Fn.importValue(`${deploymentStage}CognitoRegion`);
@@ -27,7 +28,12 @@ export class FrontendStack extends Stack {
       onUpdate: {
         action: 'putObject',
         parameters: {
-          Body: `window._ec2DashConfig=${JSON.stringify({cognitoUserPoolClientId, cognitoUserPoolId, cognitoRegion})};`,
+          Body: `window._ec2DashConfig=${JSON.stringify({
+            apiBaseUrl,
+            cognitoRegion,
+            cognitoUserPoolClientId,
+            cognitoUserPoolId,
+          })};`,
           Bucket: frontendBucket.bucketName,
           Key: 'config.js',
         },

@@ -1,6 +1,6 @@
 import Auth from '@aws-amplify/auth';
 import { CognitoUserSession } from 'amazon-cognito-identity-js';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { IEc2Instance } from 'ec2-dash-models';
 import { getInstances } from '.';
 
@@ -34,6 +34,10 @@ describe('getInstances', () => {
       },
     };
 
+    const response: Partial<AxiosResponse<IEc2Instance[]>> = {
+      data: testInstances,
+    };
+
     const fakeSession = {
       getIdToken: () => ({
         getJwtToken: () => testJwt,
@@ -41,7 +45,7 @@ describe('getInstances', () => {
     } as CognitoUserSession;
 
     const axiosSpy = jest.spyOn(axios, 'get');
-    axiosSpy.mockResolvedValue(testInstances);
+    axiosSpy.mockResolvedValue(response);
 
     const currentSessionSpy = jest.spyOn(Auth, 'currentSession');
     currentSessionSpy.mockResolvedValue(fakeSession);

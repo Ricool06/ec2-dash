@@ -1,6 +1,6 @@
 import { APIGatewayProxyResult } from 'aws-lambda';
+import { IEc2Instance } from 'ec2-dash-models';
 import { handler } from '../src/handler';
-import { IEc2Instance } from '../src/models';
 
 jest.mock('aws-sdk');
 
@@ -16,6 +16,9 @@ describe('handler', () => {
 
     const expectedResponse: APIGatewayProxyResult = {
       body: JSON.stringify(fakeInstances),
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
       statusCode: 200
     };
 
@@ -30,6 +33,9 @@ describe('handler', () => {
 
     const expectedResponse: APIGatewayProxyResult = {
       body: JSON.stringify({ error: expectedError.message }),
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
       statusCode: 500
     };
 
