@@ -21,7 +21,7 @@
     "watch": "tsc -w",
     "cdk": "cdk",
     "bootstrap": "cdk bootstrap --profile ec2-dash",
-    "deploy": "npm run bootstrap && cdk deploy --profile ec2-dash *Stack*",
+    "deploy": "npm run build && npm run bootstrap && cdk deploy --profile ec2-dash *Stack*",
     "synth": "npm run bootstrap && cdk synthesize --profile ec2-dash *Stack*",
     "destroy": "cdk destroy --profile ec2-dash *Stack*",
     "deploy:prod": "npm run bootstrap && cdk deploy --require-approval never --profile ec2-dash --context deploymentStage=prod *Stack*",
@@ -29,18 +29,21 @@
   },
   "devDependencies": {
     "@types/node": "^8.10.45",
-    "aws-cdk": "^1.4.0",
+    "aws-cdk": "^1.15.0",
     "ts-node": "^8.1.0",
     "tslint": "^5.18.0",
     "typescript": "^3.3.3333"
   },
   "dependencies": {
-    "@aws-cdk/aws-cognito": "^1.8.0",
-    "@aws-cdk/aws-s3": "^1.8.0",
-    "@aws-cdk/aws-s3-assets": "^1.8.0",
-    "@aws-cdk/aws-s3-deployment": "^1.8.0",
-    "@aws-cdk/core": "^1.8.0",
-    "@aws-cdk/custom-resources": "^1.8.0",
+    "@aws-cdk/aws-apigateway": "^1.15.0",
+    "@aws-cdk/aws-cognito": "^1.15.0",
+    "@aws-cdk/aws-iam": "^1.15.0",
+    "@aws-cdk/aws-lambda": "^1.15.0",
+    "@aws-cdk/aws-s3": "^1.15.0",
+    "@aws-cdk/aws-s3-assets": "^1.15.0",
+    "@aws-cdk/aws-s3-deployment": "^1.15.0",
+    "@aws-cdk/core": "^1.15.0",
+    "@aws-cdk/custom-resources": "^1.15.0",
     "source-map-support": "^0.5.9"
   }
 }

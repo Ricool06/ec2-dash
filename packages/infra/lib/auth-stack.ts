@@ -36,6 +36,12 @@ export class AuthStack extends Stack {
       value: cognitoUserPool.ref,
     });
 
+    new CfnOutput(this, 'cognitoUserPoolArn', {
+      description: 'ARN of the cognito user pool which will be used to store users',
+      exportName: `${deploymentStage}CognitoUserPoolArn`,
+      value: cognitoUserPool.attrArn,
+    });
+
     new CfnOutput(this, 'cognitoUserPoolClientId', {
       description: 'Physical ID of the cognito user pool client which will be used to interact with the user pool',
       exportName: `${deploymentStage}CognitoUserPoolClientId`,

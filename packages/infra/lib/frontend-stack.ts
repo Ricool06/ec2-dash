@@ -3,7 +3,6 @@ import { Bucket } from '@aws-cdk/aws-s3';
 import { BucketDeployment, Source } from '@aws-cdk/aws-s3-deployment';
 import { CfnOutput, Construct, Fn, Stack, StackProps } from '@aws-cdk/core';
 import { AwsCustomResource } from '@aws-cdk/custom-resources';
-import { createHash } from 'crypto';
 import * as path from 'path';
 
 export class FrontendStack extends Stack {
@@ -17,9 +16,10 @@ export class FrontendStack extends Stack {
 
     const deployment = new BucketDeployment(this, 'static-site-bucket-deployment', {
       destinationBucket: frontendBucket,
-      source: Source.asset(path.join(__dirname, '../../dashboard/build')),
+      sources: [Source.asset(path.join(__dirname, '../../dashboard/build'))],
     });
 
+    const apiBaseUrl = Fn.importValue(`${deploymentStage}apiBaseUrl`);
     const cognitoUserPoolId = Fn.importValue(`${deploymentStage}CognitoUserPoolId`);
     const cognitoUserPoolClientId = Fn.importValue(`${deploymentStage}CognitoUserPoolClientId`);
     const cognitoRegion = Fn.importValue(`${deploymentStage}CognitoRegion`);
@@ -28,7 +28,12 @@ export class FrontendStack extends Stack {
       onUpdate: {
         action: 'putObject',
         parameters: {
-          Body: `window._ec2DashConfig=${JSON.stringify({cognitoUserPoolClientId, cognitoUserPoolId, cognitoRegion})};`,
+          Body: `window._ec2DashConfig=${JSON.stringify({
+            apiBaseUrl,
+            cognitoRegion,
+            cognitoUserPoolClientId,
+            cognitoUserPoolId,
+          })};`,
           Bucket: frontendBucket.bucketName,
           Key: 'config.js',
         },

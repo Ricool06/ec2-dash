@@ -5,9 +5,11 @@
     ],
     "jsRules": {},
     "rules": {
-        "no-unused-expression": false,
-        "quotemark": [true, "single", "jsx-double"],
-        "no-unused-variable": true
+        "trailing-comma": true,
+        "quotemark": {
+            "options": "single"
+        },
+        "arrow-parens": false
     },
     "rulesDirectory": []
 }
