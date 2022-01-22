@@ -31,7 +31,7 @@
     "cypress": "^3.4.1",
     "eslint": "^6.4.0",
     "@aws-amplify/auth": "^1.5.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^3.1.1",
     "eslint-plugin-cypress": "^2.6.1"
   },
   "dependencies": {
