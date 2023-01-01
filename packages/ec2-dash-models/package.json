@@ -24,7 +24,7 @@
     "url": "https://github.com/Ricool06/ec2-dash/issues"
   },
   "devDependencies": {
-    "ts-loader": "^6.2.1",
+    "ts-loader": "^9.4.2",
     "typescript": "^3.7.2"
   }
 }
